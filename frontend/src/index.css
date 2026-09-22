@@ -882,3 +882,1709 @@ input {
     white-space: nowrap;
   }
 }
+/* =========================================================
+   FASIREPORT REDESIGN
+   Visual refresh based on the provided reference images.
+   Existing API calls and application behavior are unchanged.
+   ========================================================= */
+
+:root {
+  --fasi-blue: #1594c8;
+  --fasi-blue-deep: #087fac;
+  --fasi-teal: #13b89c;
+  --fasi-teal-deep: #078a7c;
+  --fasi-aqua: #dff7f3;
+  --fasi-ink: #173c4b;
+  --fasi-muted: #6d8790;
+  --fasi-border: #cfe7e5;
+  --fasi-soft: #f3fbfa;
+  --fasi-white: #ffffff;
+  --fasi-shadow: 0 16px 44px rgba(22, 111, 119, 0.13);
+}
+
+html {
+  min-width: 320px;
+  background: #eef9f7;
+}
+
+body {
+  min-width: 320px;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #eef9f7;
+  color: var(--fasi-ink);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- Shared brand ---------- */
+.fasi-brand-icon {
+  width: 47px;
+  height: 47px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex: 0 0 auto;
+  background: linear-gradient(135deg, rgba(21, 148, 200, 0.13), rgba(19, 184, 156, 0.14));
+  border: 2px solid rgba(16, 159, 165, 0.42);
+  color: var(--fasi-blue-deep);
+}
+
+.fasi-brand-icon.large {
+  width: 74px;
+  height: 74px;
+  border-radius: 16px;
+}
+
+.fasi-wrench {
+  position: absolute;
+  left: 4px;
+  bottom: 5px;
+  font-size: 25px;
+  line-height: 1;
+  color: var(--fasi-blue);
+  transform: rotate(-18deg);
+  font-weight: 900;
+}
+
+.fasi-brand-icon.large .fasi-wrench {
+  font-size: 38px;
+  left: 5px;
+  bottom: 8px;
+}
+
+.fasi-sheet {
+  margin-left: 12px;
+  font-size: 25px;
+  line-height: 1;
+  color: var(--fasi-teal-deep);
+  font-weight: 900;
+}
+
+.fasi-brand-icon.large .fasi-sheet {
+  margin-left: 18px;
+  font-size: 39px;
+}
+
+.fasi-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  text-align: left;
+}
+
+.fasi-brand-text strong {
+  color: #168cb9;
+  font-size: 22px;
+  line-height: 1.05;
+  letter-spacing: -0.7px;
+}
+
+.fasi-brand-text small {
+  color: #234b55;
+  font-size: 9px;
+  line-height: 1.2;
+  margin-top: 3px;
+  white-space: nowrap;
+}
+
+/* ---------- Login page ---------- */
+.login-page.fasi-login-page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(340px, 1fr) minmax(390px, 0.9fr);
+  align-items: center;
+  gap: clamp(30px, 7vw, 120px);
+  padding: 120px clamp(44px, 8vw, 140px) 70px;
+  background:
+    radial-gradient(circle at 8% 10%, rgba(255, 255, 255, 0.98) 0 9%, transparent 30%),
+    radial-gradient(circle at 40% 22%, rgba(140, 240, 226, 0.45), transparent 32%),
+    linear-gradient(115deg, #e7faf6 0%, #c9f4ed 38%, #88e2d6 65%, #41c8b3 100%);
+}
+
+.login-page.fasi-login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.48;
+  background:
+    linear-gradient(130deg, transparent 0 44%, rgba(11, 155, 157, 0.22) 44% 53%, transparent 53% 100%),
+    radial-gradient(circle at 56% 12%, transparent 0 28px, rgba(20, 160, 168, 0.2) 29px 42px, transparent 43px),
+    radial-gradient(circle at 19% 77%, transparent 0 54px, rgba(20, 160, 168, 0.11) 55px 72px, transparent 73px),
+    linear-gradient(20deg, rgba(255,255,255,.24) 0 1px, transparent 1px 100%);
+}
+
+.login-corner-brand {
+  position: absolute;
+  top: 48px;
+  left: clamp(38px, 7vw, 110px);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-corner-brand .fasi-brand-text strong {
+  font-size: 36px;
+}
+
+.login-corner-brand .fasi-brand-text small {
+  font-size: 12px;
+}
+
+.login-hero-copy {
+  position: relative;
+  z-index: 3;
+  align-self: center;
+  max-width: 630px;
+  padding-top: 70px;
+}
+
+.hero-brand-large {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero-brand-large h1 {
+  font-size: clamp(46px, 5vw, 72px);
+  letter-spacing: -2.5px;
+  line-height: 0.95;
+  color: #0d8db8;
+  margin: 0;
+}
+
+.hero-brand-large p {
+  margin-top: 8px;
+  font-size: clamp(15px, 1.45vw, 21px);
+  color: #173d46;
+}
+
+.login-hero-description {
+  margin-top: 28px;
+  max-width: 520px;
+  color: #3b6971;
+  line-height: 1.8;
+  font-size: 16px;
+}
+
+.login-card.fasi-login-card {
+  position: relative;
+  z-index: 5;
+  width: min(100%, 510px);
+  max-width: 510px;
+  justify-self: center;
+  background: rgba(255, 255, 255, 0.96);
+  padding: 38px 42px 34px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  box-shadow: 0 22px 70px rgba(13, 103, 111, 0.2);
+  backdrop-filter: blur(16px);
+}
+
+.fasi-login-card .login-header {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.login-card-kicker {
+  display: inline-block;
+  color: var(--fasi-teal-deep);
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 1.8px;
+  margin-bottom: 8px;
+}
+
+.fasi-login-card .login-header h1 {
+  color: #168bb5;
+  font-size: 31px;
+  letter-spacing: -0.8px;
+  margin-bottom: 7px;
+}
+
+.fasi-login-card .login-header p {
+  color: #425f68;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.fasi-login-card .login-form {
+  gap: 18px;
+}
+
+.fasi-login-card .form-group {
+  gap: 7px;
+}
+
+.fasi-login-card .form-group label {
+  color: #102f3b;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.login-input-wrap {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 52px;
+  padding: 0 15px;
+  border-radius: 10px;
+  border: 2px solid #2ea6a6;
+  background: #fff;
+  transition: box-shadow .18s ease, border-color .18s ease;
+}
+
+.login-input-wrap:focus-within {
+  border-color: var(--fasi-blue);
+  box-shadow: 0 0 0 4px rgba(21, 148, 200, 0.11);
+}
+
+.login-input-wrap > span {
+  color: #247381;
+  font-size: 22px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.login-input-wrap input,
+.fasi-login-card .form-group .login-input-wrap input {
+  border: none;
+  outline: none;
+  padding: 0;
+  min-height: 48px;
+  width: 100%;
+  color: #183d48;
+  background: transparent;
+}
+
+.login-input-wrap input::placeholder {
+  color: #96a5aa;
+}
+
+.login-helper-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: -2px;
+}
+
+.remember-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #405e66;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.remember-row input {
+  accent-color: var(--fasi-teal);
+  width: 16px;
+  height: 16px;
+}
+
+.login-text-link {
+  border: none;
+  background: transparent;
+  color: #087d90;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+  padding: 4px 0;
+}
+
+.login-text-link:hover {
+  text-decoration: underline;
+}
+
+.login-button.fasi-login-button {
+  margin-top: 2px;
+  min-height: 52px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1596ca 0%, #10a7b1 52%, #14ba84 100%);
+  box-shadow: 0 10px 22px rgba(12, 151, 156, 0.22);
+  font-size: 17px;
+  letter-spacing: .2px;
+}
+
+.login-button.fasi-login-button:hover {
+  background: linear-gradient(90deg, #0e86b8 0%, #0d9da8 52%, #0ea979 100%);
+  transform: translateY(-1px);
+}
+
+.login-support-copy {
+  margin-top: 20px;
+  text-align: center;
+  color: #3e5961;
+}
+
+.login-support-copy p {
+  font-size: 13px;
+}
+
+.login-support-copy strong {
+  color: #087d90;
+}
+
+.login-support-copy small {
+  display: block;
+  margin-top: 7px;
+  font-size: 11px;
+  color: #81969d;
+}
+
+.login-background-art {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+}
+
+.art-monitor {
+  position: absolute;
+  right: 3%;
+  top: 20%;
+  width: 22vw;
+  min-width: 260px;
+  height: 33vh;
+  min-height: 260px;
+  border-radius: 20px;
+  background: rgba(21, 106, 116, 0.21);
+  box-shadow: inset 0 0 0 16px rgba(255,255,255,.12);
+}
+
+.art-monitor::before {
+  content: "";
+  position: absolute;
+  left: 44%;
+  bottom: -19%;
+  width: 16%;
+  height: 20%;
+  background: rgba(21, 106, 116, 0.24);
+}
+
+.art-monitor::after {
+  content: "";
+  position: absolute;
+  left: 28%;
+  bottom: -23%;
+  width: 48%;
+  height: 5%;
+  border-radius: 999px;
+  background: rgba(21, 106, 116, 0.24);
+}
+
+.art-desk {
+  position: absolute;
+  right: 0;
+  bottom: 27%;
+  width: 43%;
+  height: 22px;
+  background: rgba(17, 113, 116, 0.23);
+  box-shadow: 0 18px 0 rgba(255,255,255,.12);
+}
+
+.art-chair {
+  position: absolute;
+  right: 4%;
+  bottom: 7%;
+  width: 11vw;
+  min-width: 130px;
+  height: 23vh;
+  min-height: 180px;
+  border-radius: 34px 34px 22px 22px;
+  background: rgba(8, 107, 112, 0.31);
+  transform: skew(-5deg);
+}
+
+.art-chair::before,
+.art-chair::after {
+  content: "";
+  position: absolute;
+  bottom: -25%;
+  width: 10px;
+  height: 28%;
+  background: rgba(8, 107, 112, 0.32);
+  border-radius: 999px;
+}
+
+.art-chair::before { left: 30%; transform: rotate(13deg); }
+.art-chair::after { right: 28%; transform: rotate(-13deg); }
+
+.art-lamp {
+  position: absolute;
+  right: 11%;
+  top: -4%;
+  width: 10px;
+  height: 28%;
+  background: rgba(13, 102, 108, 0.42);
+  transform: rotate(13deg);
+  transform-origin: top;
+}
+
+.art-lamp::after {
+  content: "";
+  position: absolute;
+  left: -66px;
+  bottom: -24px;
+  width: 138px;
+  height: 58px;
+  border-radius: 16px 16px 48px 48px;
+  background: rgba(13, 102, 108, 0.41);
+  transform: rotate(7deg);
+}
+
+.art-bulb {
+  position: absolute;
+  right: 13%;
+  bottom: 31%;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(13, 102, 108, 0.45);
+  font-size: 31px;
+  font-weight: 900;
+  background: rgba(255,255,255,.48);
+  border: 7px solid rgba(255,255,255,.2);
+}
+
+/* ---------- App shell ---------- */
+.dashboard-page.fasi-dashboard-page {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 97% 0%, rgba(92, 214, 198, 0.18), transparent 28%),
+    linear-gradient(135deg, #edf9f7 0%, #f8fcfb 45%, #e7f7f4 100%);
+  color: var(--fasi-ink);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.dashboard-page.fasi-dashboard-page::before {
+  content: "";
+  position: fixed;
+  z-index: 0;
+  right: -110px;
+  top: 100px;
+  width: 420px;
+  height: 420px;
+  border-radius: 70px;
+  transform: rotate(24deg);
+  border: 44px solid rgba(26, 181, 166, 0.035);
+  pointer-events: none;
+}
+
+.fasi-sidebar {
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 232px;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255, 255, 255, 0.96);
+  border-right: 1px solid #d4eae8;
+  box-shadow: 8px 0 30px rgba(24, 109, 115, 0.05);
+  padding: 22px 14px 18px;
+  backdrop-filter: blur(14px);
+}
+
+.sidebar-brand {
+  border: none;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 6px 7px 24px;
+  border-bottom: 1px solid #e6f1f0;
+  cursor: pointer;
+}
+
+.sidebar-brand .fasi-brand-icon {
+  width: 39px;
+  height: 39px;
+  border-radius: 10px;
+}
+
+.sidebar-brand .fasi-wrench,
+.sidebar-brand .fasi-sheet {
+  font-size: 20px;
+}
+
+.sidebar-brand .fasi-brand-text strong {
+  font-size: 18px;
+}
+
+.sidebar-brand .fasi-brand-text small {
+  font-size: 6.7px;
+}
+
+.fasi-sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  margin-top: 24px;
+}
+
+.sidebar-nav-button {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: none;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-align: left;
+  background: transparent;
+  color: #43616b;
+  cursor: pointer;
+  font-weight: 650;
+  font-size: 13px;
+  transition: background .17s ease, color .17s ease, transform .17s ease;
+}
+
+.sidebar-nav-button:hover {
+  background: #eaf8f5;
+  color: #087f83;
+  transform: translateX(2px);
+}
+
+.sidebar-nav-button.active {
+  color: #fff;
+  background: linear-gradient(90deg, #169ac8 0%, #10ad91 100%);
+  box-shadow: 0 8px 18px rgba(16, 157, 157, 0.17);
+}
+
+.sidebar-nav-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(14, 138, 150, 0.08);
+  font-size: 15px;
+}
+
+.sidebar-nav-button.active .sidebar-nav-icon {
+  background: rgba(255,255,255,.17);
+}
+
+.sidebar-spacer {
+  flex: 1;
+}
+
+.sidebar-logout {
+  border: none;
+  background: transparent;
+  color: #47656e;
+  cursor: pointer;
+  padding: 11px 13px;
+  border-radius: 9px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.sidebar-logout:hover {
+  background: #fff1f1;
+  color: #b53c3c;
+}
+
+.fasi-topbar {
+  position: fixed;
+  z-index: 45;
+  top: 0;
+  left: 232px;
+  right: 0;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 34px;
+  background: rgba(255, 255, 255, 0.89);
+  border-bottom: 1px solid #dceceb;
+  backdrop-filter: blur(18px);
+}
+
+.topbar-page-title {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.topbar-eyebrow {
+  color: #74a0a1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.3px;
+  text-transform: uppercase;
+}
+
+.topbar-page-title strong {
+  color: #173e4a;
+  font-size: 17px;
+}
+
+.fasi-topbar .header-user {
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  background: linear-gradient(135deg, #1497c5, #14b78f);
+  font-weight: 900;
+  box-shadow: 0 5px 14px rgba(17, 141, 154, .2);
+}
+
+.user-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+  min-width: 100px;
+}
+
+.user-meta strong {
+  color: #1c414b;
+  font-size: 13px;
+}
+
+.user-meta span {
+  color: #729096;
+  font-size: 10px;
+  margin-top: 4px;
+}
+
+.topbar-icon-button,
+.topbar-logout-button {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #3e6871;
+  cursor: pointer;
+}
+
+.topbar-icon-button:hover,
+.topbar-logout-button:hover {
+  background: #eaf7f5;
+  color: #087f83;
+}
+
+.dashboard-content.fasi-main-content,
+.fasi-main-content {
+  position: relative;
+  z-index: 2;
+  max-width: none;
+  margin: 0 0 0 232px;
+  padding: 106px 38px 50px;
+  min-height: 100vh;
+}
+
+.portal-kicker {
+  display: inline-block;
+  color: #0c8e8b;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 1.6px;
+  margin-bottom: 6px;
+}
+
+.portal-card {
+  background: rgba(255,255,255,.95);
+  border: 1px solid var(--fasi-border);
+  border-radius: 16px;
+  box-shadow: 0 11px 30px rgba(24, 109, 115, .075);
+}
+
+.portal-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 22px;
+}
+
+.portal-card-heading h3 {
+  font-size: 18px;
+  color: #193e49;
+  margin: 2px 0 0;
+}
+
+.portal-card-eyebrow {
+  color: #7a999f;
+  font-size: 10px;
+  letter-spacing: 1.1px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.text-action-button {
+  border: none;
+  background: transparent;
+  color: #078493;
+  cursor: pointer;
+  font-weight: 750;
+  font-size: 12px;
+  padding: 4px 0;
+}
+
+.text-action-button:hover {
+  text-decoration: underline;
+}
+
+.primary-gradient-button {
+  border: none;
+  border-radius: 11px;
+  padding: 12px 17px;
+  color: #fff;
+  background: linear-gradient(90deg, #1499c7, #11b38f);
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 9px 22px rgba(16, 155, 155, .18);
+}
+
+.primary-gradient-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 25px rgba(16, 155, 155, .23);
+}
+
+/* ---------- Admin dashboard ---------- */
+.portal-hero {
+  min-height: 145px;
+  border-radius: 18px;
+  background: linear-gradient(100deg, #0e8fb4 0%, #0cae9c 58%, #43c3a5 100%);
+  color: #fff;
+  padding: 28px 30px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 16px 34px rgba(18, 134, 151, .17);
+  margin-bottom: 24px;
+}
+
+.portal-hero::after {
+  content: "";
+  position: absolute;
+  right: -80px;
+  top: -105px;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  border: 45px solid rgba(255,255,255,.11);
+}
+
+.portal-hero > div:first-child {
+  position: relative;
+  z-index: 2;
+  max-width: 650px;
+}
+
+.portal-hero .portal-kicker {
+  color: rgba(255,255,255,.78);
+}
+
+.portal-hero h2 {
+  color: #fff;
+  font-size: 31px;
+  letter-spacing: .4px;
+  margin: 0 0 6px;
+}
+
+.portal-hero p {
+  color: rgba(255,255,255,.87);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.portal-hero-art {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  padding-right: 20px;
+}
+
+.portal-hero-art span {
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 15px;
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.16);
+  font-size: 24px;
+  backdrop-filter: blur(4px);
+}
+
+.portal-hero-art span:nth-child(2) { transform: translateY(-16px); }
+
+.admin-overview-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, .9fr) minmax(420px, 1.3fr);
+  gap: 22px;
+}
+
+.admin-chart-card,
+.admin-trend-card,
+.admin-recent-card {
+  padding: 24px;
+}
+
+.portal-total-badge {
+  color: #087f84;
+  background: #e9f8f4;
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+}
+
+.status-chart-layout {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
+.status-donut {
+  width: 164px;
+  height: 164px;
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-donut::after {
+  content: "";
+  position: absolute;
+  inset: 31px;
+  border-radius: 50%;
+  background: white;
+  box-shadow: inset 0 0 0 1px #edf4f3;
+}
+
+.status-donut-center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.status-donut-center strong {
+  font-size: 26px;
+  color: #17434c;
+}
+
+.status-donut-center span {
+  font-size: 10px;
+  color: #7a969c;
+}
+
+.status-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.status-legend > div {
+  display: grid;
+  grid-template-columns: 10px 1fr auto;
+  align-items: center;
+  gap: 8px;
+  color: #57737b;
+  font-size: 12px;
+}
+
+.status-legend i {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+
+.status-legend strong {
+  color: #1d4852;
+}
+
+.legend-reported { background: #1498c8; }
+.legend-processing { background: #f3b63f; }
+.legend-repaired { background: #24b8aa; }
+.legend-completed { background: #44b96c; }
+
+.mini-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.mini-stat-item {
+  background: linear-gradient(180deg, #f6fbfa, #edf8f6);
+  border: 1px solid #d9edeb;
+  border-radius: 11px;
+  padding: 11px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.mini-stat-item span {
+  font-size: 10px;
+  color: #789398;
+}
+
+.mini-stat-item strong {
+  font-size: 20px;
+  color: #16878d;
+}
+
+.trend-visual {
+  height: 145px;
+  border-radius: 12px;
+  background:
+    linear-gradient(#edf4f3 1px, transparent 1px),
+    linear-gradient(90deg, #edf4f3 1px, transparent 1px);
+  background-size: 100% 36px, 88px 100%;
+  overflow: hidden;
+  padding: 5px 8px;
+}
+
+.trend-visual svg {
+  width: 100%;
+  height: 100%;
+}
+
+.admin-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.admin-quick-actions button {
+  border: 1px solid var(--fasi-border);
+  background: rgba(255,255,255,.94);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  gap: 13px;
+  align-items: center;
+  text-align: left;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(24, 109, 115, .055);
+}
+
+.admin-quick-actions button:hover {
+  border-color: #9fd9d2;
+  transform: translateY(-1px);
+}
+
+.admin-quick-actions button > span {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e7f7f4;
+  color: #0e8e8e;
+  font-size: 19px;
+}
+
+.admin-quick-actions button div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.admin-quick-actions button strong {
+  color: #1b4650;
+  font-size: 13px;
+}
+
+.admin-quick-actions button small {
+  color: #789399;
+  font-size: 10px;
+}
+
+.admin-quick-actions button b {
+  color: #0f9894;
+  font-size: 25px;
+}
+
+.admin-recent-card {
+  margin-top: 0;
+}
+
+.admin-recent-card .admin-report-table-wrapper {
+  border: none;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 1px #e0eeec;
+}
+
+.admin-recent-card .admin-report-table th {
+  background: #f2faf8;
+  color: #55747b;
+}
+
+.admin-recent-card .admin-report-table td,
+.admin-recent-card .admin-report-table th {
+  border-bottom-color: #e7f1f0;
+}
+
+/* ---------- Employee dashboard ---------- */
+.employee-welcome-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  margin-bottom: 22px;
+}
+
+.employee-welcome-row h2 {
+  color: #183f49;
+  margin: 0 0 4px;
+  font-size: 28px;
+}
+
+.employee-welcome-row p {
+  color: #6d888f;
+  font-size: 13px;
+}
+
+.employee-summary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.05fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.employee-summary-card,
+.employee-new-report-card {
+  min-height: 128px;
+  border-radius: 15px;
+  border: 1px solid var(--fasi-border);
+  background: rgba(255,255,255,.96);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 10px 28px rgba(24, 109, 115, .06);
+}
+
+.employee-summary-card .summary-icon {
+  width: 47px;
+  height: 47px;
+  border-radius: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f7f4;
+  color: #0a9290;
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+
+.employee-summary-card div {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.employee-summary-card small {
+  color: #78949a;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.employee-summary-card strong {
+  margin-top: 6px;
+  color: #17965d;
+  font-size: 21px;
+  line-height: 1.15;
+}
+
+.employee-summary-card p {
+  margin-top: 5px;
+  color: #6d858b;
+  font-size: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.employee-new-report-card {
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  background: linear-gradient(115deg, #1698c8, #11b990);
+  text-align: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 0 14px 30px rgba(15, 155, 159, .18);
+}
+
+.employee-new-report-card:hover {
+  transform: translateY(-2px);
+}
+
+.new-report-icon {
+  font-size: 30px;
+  line-height: 1;
+}
+
+.employee-new-report-card strong {
+  font-size: 16px;
+}
+
+.employee-new-report-card small {
+  color: rgba(255,255,255,.8);
+  font-size: 10px;
+}
+
+.employee-dashboard-workspace {
+  display: grid;
+  grid-template-columns: minmax(420px, 1.38fr) minmax(280px, .76fr);
+  gap: 18px;
+  align-items: start;
+}
+
+.dashboard-quick-report,
+.dashboard-facility-list,
+.dashboard-history-card {
+  padding: 22px;
+}
+
+.compact-report-form {
+  gap: 14px;
+}
+
+.compact-report-form .form-group {
+  gap: 6px;
+}
+
+.compact-report-form .form-group label {
+  color: #2b5059;
+  font-size: 11px;
+}
+
+.compact-report-form .form-group select,
+.compact-report-form .form-group textarea,
+.compact-report-form .form-group input:not([type="file"]) {
+  border: 1.5px solid #a5d6d3;
+  border-radius: 9px;
+  background: #fff;
+  padding: 10px 11px;
+  font-size: 12px;
+}
+
+.compact-report-form .form-group textarea {
+  min-height: 92px;
+}
+
+.quick-report-two-column {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 13px;
+}
+
+.dashboard-photo-field > input[type="file"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  width: 1px;
+  height: 1px;
+}
+
+.photo-upload-box {
+  min-height: 62px;
+  border-radius: 10px;
+  border: 1.5px dashed #9bcfca;
+  background: #f6fbfa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  color: #27777d;
+  overflow: hidden;
+  padding: 8px;
+}
+
+.photo-upload-box span {
+  font-size: 20px;
+}
+
+.photo-upload-box strong {
+  max-width: 130px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 10px;
+}
+
+.compact-report-form .submit-report-button {
+  align-self: flex-start;
+  min-width: 160px;
+}
+
+.employee-side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.compact-facility-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.compact-facility-list button {
+  border: none;
+  border-top: 1px solid #e5f0ef;
+  background: transparent;
+  display: grid;
+  grid-template-columns: 35px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 3px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.compact-facility-list button:first-child {
+  border-top: none;
+}
+
+.compact-facility-list button:hover {
+  background: #f4fbfa;
+}
+
+.facility-list-icon {
+  width: 33px;
+  height: 33px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  background: #e8f7f4;
+  color: #11938d;
+}
+
+.compact-facility-list button div {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.compact-facility-list strong {
+  color: #30545d;
+  font-size: 11px;
+}
+
+.compact-facility-list small {
+  color: #80979c;
+  font-size: 9px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compact-facility-list b {
+  color: #14958d;
+  font-size: 21px;
+}
+
+.dashboard-history-item {
+  display: grid;
+  grid-template-columns: 12px 1fr;
+  gap: 11px;
+  align-items: start;
+}
+
+.dashboard-history-item i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #1cad9d;
+  box-shadow: 0 0 0 5px #e6f7f3;
+  margin-top: 4px;
+}
+
+.dashboard-history-item div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.dashboard-history-item strong {
+  color: #2d535b;
+  font-size: 11px;
+}
+
+.dashboard-history-item p {
+  color: #668087;
+  font-size: 10px;
+}
+
+.dashboard-history-item small,
+.muted-copy {
+  color: #8ca1a6;
+  font-size: 9px;
+}
+
+/* ---------- Existing pages restyled to match theme ---------- */
+.dashboard-content:not(.fasi-main-content) {
+  margin-left: 232px;
+  padding-top: 106px;
+}
+
+.fasi-dashboard-page .dashboard-content h2,
+.dashboard-page .dashboard-content h2 {
+  color: #183f49;
+}
+
+.dashboard-description {
+  color: #6e878d;
+}
+
+.report-form-card,
+.report-list-card,
+.report-detail-card,
+.history-card,
+.admin-status-card,
+.facility-form-card,
+.facility-card,
+.empty-card,
+.stat-card {
+  border-color: var(--fasi-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(24, 109, 115, .055);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border-color: #b8d9d7;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #1ba1a2;
+  box-shadow: 0 0 0 3px rgba(27, 161, 162, .09);
+}
+
+.card-button,
+.submit-report-button,
+.edit-button {
+  background: linear-gradient(90deg, #1597c6, #11af92);
+  border-radius: 9px;
+  box-shadow: 0 7px 16px rgba(15, 153, 156, .12);
+}
+
+.card-button:hover,
+.submit-report-button:hover,
+.edit-button:hover {
+  background: linear-gradient(90deg, #1086b3, #0d9f84);
+}
+
+.back-button,
+.cancel-button {
+  border-color: #b8d9d7;
+  color: #317078;
+  background: rgba(255,255,255,.83);
+  border-radius: 9px;
+}
+
+.back-button:hover,
+.cancel-button:hover {
+  background: #eaf7f5;
+}
+
+.status-reported { background: #dff3fb; color: #087cad; }
+.status-processing { background: #fff2ce; color: #a46d00; }
+.status-repaired { background: #dff7f4; color: #0a817a; }
+.status-completed { background: #dcf4e4; color: #237f46; }
+
+.status-active {
+  background: #e0f5e8;
+  color: #247d49;
+}
+
+.history-marker {
+  background: #149b9a;
+}
+
+.admin-report-table-wrapper {
+  border-color: var(--fasi-border);
+}
+
+.admin-report-table th {
+  background: #f2faf8;
+}
+
+.priority-low { background: #e5f5e9; color: #237d49; }
+.priority-medium { background: #fff3d6; color: #8b6509; }
+.priority-high { background: #fee9e7; color: #aa433b; }
+
+.message {
+  border-radius: 10px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1120px) {
+  .login-page.fasi-login-page {
+    grid-template-columns: .9fr 1fr;
+    gap: 30px;
+    padding-left: 45px;
+    padding-right: 45px;
+  }
+
+  .login-hero-description {
+    display: none;
+  }
+
+  .admin-overview-grid,
+  .employee-dashboard-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-summary-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .employee-new-report-card {
+    grid-column: span 2;
+    min-height: 98px;
+  }
+}
+
+@media (max-width: 900px) {
+  .fasi-sidebar {
+    width: 78px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .sidebar-brand {
+    justify-content: center;
+  }
+
+  .sidebar-brand .fasi-brand-text,
+  .sidebar-nav-button > span:last-child,
+  .sidebar-logout > span:last-child {
+    display: none;
+  }
+
+  .sidebar-nav-button,
+  .sidebar-logout {
+    justify-content: center;
+  }
+
+  .fasi-topbar {
+    left: 78px;
+  }
+
+  .dashboard-content.fasi-main-content,
+  .fasi-main-content,
+  .dashboard-content:not(.fasi-main-content) {
+    margin-left: 78px;
+  }
+
+  .login-page.fasi-login-page {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    padding-top: 135px;
+  }
+
+  .login-hero-copy {
+    display: none;
+  }
+
+  .login-card.fasi-login-card {
+    width: min(100%, 520px);
+  }
+
+  .login-background-art {
+    opacity: .45;
+  }
+
+  .portal-hero-art {
+    display: none;
+  }
+
+  .mini-stat-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 680px) {
+  .fasi-sidebar {
+    top: auto;
+    right: 0;
+    width: 100%;
+    height: 66px;
+    flex-direction: row;
+    align-items: center;
+    border-right: none;
+    border-top: 1px solid #d4eae8;
+    padding: 7px 10px;
+  }
+
+  .sidebar-brand,
+  .sidebar-spacer,
+  .sidebar-logout {
+    display: none;
+  }
+
+  .fasi-sidebar-nav {
+    width: 100%;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 5px;
+  }
+
+  .sidebar-nav-button {
+    min-height: 51px;
+    padding: 7px;
+    justify-content: center;
+  }
+
+  .sidebar-nav-icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .fasi-topbar {
+    left: 0;
+    height: 66px;
+    padding: 0 15px;
+  }
+
+  .topbar-page-title strong {
+    font-size: 14px;
+  }
+
+  .user-meta,
+  .topbar-icon-button {
+    display: none;
+  }
+
+  .dashboard-content.fasi-main-content,
+  .fasi-main-content,
+  .dashboard-content:not(.fasi-main-content) {
+    margin-left: 0;
+    padding: 88px 16px 92px;
+  }
+
+  .employee-welcome-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .employee-summary-grid,
+  .admin-quick-actions,
+  .quick-report-two-column {
+    grid-template-columns: 1fr;
+  }
+
+  .employee-new-report-card {
+    grid-column: auto;
+  }
+
+  .admin-overview-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status-chart-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .status-legend {
+    width: 100%;
+  }
+
+  .portal-hero {
+    padding: 22px;
+  }
+
+  .portal-hero h2 {
+    font-size: 25px;
+  }
+
+  .login-page.fasi-login-page {
+    padding: 105px 16px 35px;
+  }
+
+  .login-corner-brand {
+    top: 28px;
+    left: 20px;
+  }
+
+  .login-corner-brand .fasi-brand-text strong {
+    font-size: 26px;
+  }
+
+  .login-corner-brand .fasi-brand-text small {
+    font-size: 9px;
+  }
+
+  .login-card.fasi-login-card {
+    padding: 28px 22px 26px;
+  }
+
+  .fasi-login-card .login-header h1 {
+    font-size: 26px;
+  }
+
+  .art-monitor,
+  .art-chair,
+  .art-lamp,
+  .art-bulb {
+    display: none;
+  }
+}

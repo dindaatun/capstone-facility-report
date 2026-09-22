@@ -312,6 +312,8 @@ function App() {
       if (photoInputRef.current) {
         photoInputRef.current.value = ''
       }
+
+      await loadMyReports()
     } catch {
       setReportError('Tidak dapat terhubung ke server')
     } finally {
@@ -360,6 +362,16 @@ function App() {
     setSelectedReport(null)
     await loadMyReports()
   }
+
+  useEffect(() => {
+    if (
+      currentUser?.role === 'employee' &&
+      employeeView === 'dashboard'
+    ) {
+      loadFacilities()
+      loadMyReports()
+    }
+  }, [currentUser, employeeView])
 
   const handleShowReportDetail = async (reportId) => {
     const token = localStorage.getItem('token')
@@ -975,8 +987,23 @@ function App() {
   // =========================================
 
   if (currentUser?.role === 'admin') {
+    const totalReports = adminDashboard?.total_reports || 0
+    const safeTotal = totalReports || 1
+    const reportedPct = ((adminDashboard?.status?.reported || 0) / safeTotal) * 100
+    const processingPct = reportedPct + ((adminDashboard?.status?.processing || 0) / safeTotal) * 100
+    const repairedPct = processingPct + ((adminDashboard?.status?.repaired || 0) / safeTotal) * 100
+
+    const chartBackground = totalReports
+      ? `conic-gradient(
+          #1498c8 0 ${reportedPct}%,
+          #f3b63f ${reportedPct}% ${processingPct}%,
+          #24b8aa ${processingPct}% ${repairedPct}%,
+          #44b96c ${repairedPct}% 100%
+        )`
+      : 'conic-gradient(#d9eeec 0 100%)'
+
     return (
-      <div className="dashboard-page">
+      <div className="dashboard-page fasi-dashboard-page admin-dashboard-page">
         <AppHeader
           user={currentUser}
           title="Dashboard Admin"
@@ -984,31 +1011,19 @@ function App() {
           onNavigate={handleAdminNavigate}
         />
 
-        <main className="dashboard-content">
-          <div className="admin-title-row">
+        <main className="dashboard-content fasi-main-content">
+          <section className="portal-hero admin-portal-hero">
             <div>
-              <h2>Dashboard Admin</h2>
-              <p className="dashboard-description">
-                Ringkasan kondisi laporan fasilitas perusahaan.
-              </p>
+              <span className="portal-kicker">PUSAT KONTROL FASILITAS</span>
+              <h2>ADMIN PORTAL</h2>
+              <p>Pantau laporan kerusakan dan proses penanganannya dalam satu dashboard.</p>
             </div>
-
-            <div className="admin-actions">
-              <button
-                className="card-button"
-                onClick={handleShowAdminReports}
-              >
-                Semua Laporan
-              </button>
-
-              <button
-                className="card-button"
-                onClick={() => setAdminView('facilities')}
-              >
-                Kelola Fasilitas
-              </button>
+            <div className="portal-hero-art" aria-hidden="true">
+              <span>⚙</span>
+              <span>▤</span>
+              <span>⚒</span>
             </div>
-          </div>
+          </section>
 
           {adminDashboardError && (
             <div className="message error-message">
@@ -1024,98 +1039,135 @@ function App() {
 
           {adminDashboard && (
             <>
-              <div className="stats-grid">
-                <div className="stat-card">
-                  <span>Total Laporan</span>
-                  <strong>{adminDashboard.total_reports}</strong>
-                </div>
-
-                <div className="stat-card">
-                  <span>Dilaporkan</span>
-                  <strong>{adminDashboard.status.reported}</strong>
-                </div>
-
-                <div className="stat-card">
-                  <span>Diproses</span>
-                  <strong>{adminDashboard.status.processing}</strong>
-                </div>
-
-                <div className="stat-card">
-                  <span>Diperbaiki</span>
-                  <strong>{adminDashboard.status.repaired}</strong>
-                </div>
-
-                <div className="stat-card">
-                  <span>Selesai</span>
-                  <strong>{adminDashboard.status.completed}</strong>
-                </div>
-
-                <div className="stat-card">
-                  <span>Fasilitas Aktif</span>
-                  <strong>{adminDashboard.active_facilities}</strong>
-                </div>
-              </div>
-
-              <section className="admin-section">
-                <h3>Laporan Berdasarkan Prioritas</h3>
-
-                <div className="priority-grid">
-                  <div className="priority-card priority-low">
-                    <span>Rendah</span>
-                    <strong>{adminDashboard.priority.low}</strong>
+              <section className="admin-overview-grid">
+                <div className="portal-card admin-chart-card">
+                  <div className="portal-card-heading">
+                    <div>
+                      <span className="portal-card-eyebrow">Ringkasan</span>
+                      <h3>Statistik Laporan</h3>
+                    </div>
+                    <strong className="portal-total-badge">{totalReports} laporan</strong>
                   </div>
 
-                  <div className="priority-card priority-medium">
-                    <span>Sedang</span>
-                    <strong>{adminDashboard.priority.medium}</strong>
+                  <div className="status-chart-layout">
+                    <div
+                      className="status-donut"
+                      style={{ background: chartBackground }}
+                      aria-label={`Total ${totalReports} laporan`}
+                    >
+                      <div className="status-donut-center">
+                        <strong>{totalReports}</strong>
+                        <span>Total</span>
+                      </div>
+                    </div>
+
+                    <div className="status-legend">
+                      <div><i className="legend-reported" /><span>Dilaporkan</span><strong>{adminDashboard.status.reported}</strong></div>
+                      <div><i className="legend-processing" /><span>Diproses</span><strong>{adminDashboard.status.processing}</strong></div>
+                      <div><i className="legend-repaired" /><span>Diperbaiki</span><strong>{adminDashboard.status.repaired}</strong></div>
+                      <div><i className="legend-completed" /><span>Selesai</span><strong>{adminDashboard.status.completed}</strong></div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="portal-card admin-trend-card">
+                  <div className="portal-card-heading">
+                    <div>
+                      <span className="portal-card-eyebrow">Kondisi Sistem</span>
+                      <h3>Ringkasan Operasional</h3>
+                    </div>
                   </div>
 
-                  <div className="priority-card priority-high">
-                    <span>Tinggi</span>
-                    <strong>{adminDashboard.priority.high}</strong>
+                  <div className="mini-stat-grid">
+                    <div className="mini-stat-item">
+                      <span>Fasilitas Aktif</span>
+                      <strong>{adminDashboard.active_facilities}</strong>
+                    </div>
+                    <div className="mini-stat-item">
+                      <span>Prioritas Tinggi</span>
+                      <strong>{adminDashboard.priority.high}</strong>
+                    </div>
+                    <div className="mini-stat-item">
+                      <span>Sedang</span>
+                      <strong>{adminDashboard.priority.medium}</strong>
+                    </div>
+                    <div className="mini-stat-item">
+                      <span>Rendah</span>
+                      <strong>{adminDashboard.priority.low}</strong>
+                    </div>
+                  </div>
+
+                  <div className="trend-visual" aria-hidden="true">
+                    <svg viewBox="0 0 440 150" role="img">
+                      <defs>
+                        <linearGradient id="trendFill" x1="0" x2="0" y1="0" y2="1">
+                          <stop offset="0%" stopColor="#18a89a" stopOpacity="0.26" />
+                          <stop offset="100%" stopColor="#18a89a" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M12 124 L105 78 L198 105 L292 42 L428 88 L428 140 L12 140 Z" fill="url(#trendFill)" />
+                      <polyline points="12,124 105,78 198,105 292,42 428,88" fill="none" stroke="#168f91" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="12" cy="124" r="5" fill="#168f91" />
+                      <circle cx="105" cy="78" r="5" fill="#168f91" />
+                      <circle cx="198" cy="105" r="5" fill="#168f91" />
+                      <circle cx="292" cy="42" r="5" fill="#168f91" />
+                      <circle cx="428" cy="88" r="5" fill="#168f91" />
+                    </svg>
                   </div>
                 </div>
               </section>
 
-              <section className="admin-section">
-                <h3>Laporan Terbaru</h3>
+              <section className="admin-quick-actions">
+                <button type="button" onClick={handleShowAdminReports}>
+                  <span>▤</span>
+                  <div><strong>Semua Laporan</strong><small>Lihat dan proses laporan karyawan</small></div>
+                  <b>›</b>
+                </button>
+                <button type="button" onClick={() => setAdminView('facilities')}>
+                  <span>⚒</span>
+                  <div><strong>Kelola Fasilitas</strong><small>Tambah, edit, aktifkan atau nonaktifkan</small></div>
+                  <b>›</b>
+                </button>
+              </section>
+
+              <section className="portal-card admin-recent-card">
+                <div className="portal-card-heading table-heading-row">
+                  <div>
+                    <span className="portal-card-eyebrow">Aktivitas</span>
+                    <h3>Laporan Terbaru</h3>
+                  </div>
+                  <button type="button" className="text-action-button" onClick={handleShowAdminReports}>
+                    Lihat Semua
+                  </button>
+                </div>
 
                 <div className="admin-report-table-wrapper">
                   <table className="admin-report-table">
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Karyawan</th>
                         <th>Fasilitas</th>
+                        <th>Pelapor</th>
                         <th>Prioritas</th>
                         <th>Status</th>
                         <th>Tanggal</th>
                       </tr>
                     </thead>
-
                     <tbody>
-                      {adminDashboard.recent_reports?.map(
-                        (report) => (
-                          <tr key={report.id}>
-                            <td>#{report.id}</td>
-                            <td>{report.user?.name}</td>
-                            <td>{report.facility?.name}</td>
-                            <td>
-                              {getPriorityLabel(report.priority)}
-                            </td>
-                            <td>
-                              <span
-                                className={`status-badge status-${report.status}`}
-                              >
-                                {getStatusLabel(report.status)}
-                              </span>
-                            </td>
-                            <td>
-                              {formatDate(report.created_at)}
-                            </td>
-                          </tr>
-                        ),
-                      )}
+                      {adminDashboard.recent_reports?.map((report) => (
+                        <tr key={report.id}>
+                          <td>#{report.id}</td>
+                          <td>{report.facility?.name}</td>
+                          <td>{report.user?.name}</td>
+                          <td>{getPriorityLabel(report.priority)}</td>
+                          <td>
+                            <span className={`status-badge status-${report.status}`}>
+                              {getStatusLabel(report.status)}
+                            </span>
+                          </td>
+                          <td>{formatDate(report.created_at)}</td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -1584,8 +1636,12 @@ function App() {
   // =========================================
 
   if (currentUser?.role === 'employee') {
+    const latestReport = reports[0] || null
+    const firstFacility = facilities[0] || null
+    const latestHistory = latestReport?.status_histories?.[0] || null
+
     return (
-      <div className="dashboard-page">
+      <div className="dashboard-page fasi-dashboard-page employee-dashboard-page">
         <AppHeader
           user={currentUser}
           title="Dashboard Karyawan"
@@ -1593,50 +1649,171 @@ function App() {
           onNavigate={handleEmployeeNavigate}
         />
 
-        <main className="dashboard-content">
-          <h2>Selamat datang, {currentUser.name}</h2>
+        <main className="dashboard-content fasi-main-content">
+          <section className="employee-welcome-row">
+            <div>
+              <span className="portal-kicker">DASHBOARD KARYAWAN</span>
+              <h2>Halo, {currentUser.name}</h2>
+              <p>Pantau kondisi laporan dan laporkan fasilitas yang perlu diperbaiki.</p>
+            </div>
+            <button type="button" className="primary-gradient-button" onClick={handleShowCreateReport}>
+              <span>✎</span> Buat Laporan Baru
+            </button>
+          </section>
 
-          <p className="dashboard-description">
-            Laporkan kondisi fasilitas perusahaan dengan mudah.
-          </p>
+          <section className="employee-summary-grid">
+            <article className="employee-summary-card status-summary-card">
+              <span className="summary-icon">▤</span>
+              <div>
+                <small>Status Laporan Terbaru</small>
+                <strong>{latestReport ? getStatusLabel(latestReport.status) : 'Belum ada laporan'}</strong>
+                <p>{latestReport ? latestReport.facility?.name : 'Buat laporan pertama Anda'}</p>
+              </div>
+            </article>
 
-          <div className="dashboard-grid">
-            <div className="dashboard-card">
-              <h3>Buat Laporan</h3>
-              <p>Laporkan fasilitas yang mengalami masalah.</p>
+            <article className="employee-summary-card facility-summary-card">
+              <span className="summary-icon">⌖</span>
+              <div>
+                <small>Fasilitas Tersedia</small>
+                <strong>{facilities.length} Fasilitas</strong>
+                <p>{firstFacility ? `${firstFacility.name} • ${firstFacility.location}` : 'Memuat data fasilitas...'}</p>
+              </div>
+            </article>
 
-              <button
-                className="card-button"
-                onClick={handleShowCreateReport}
-              >
-                Buat Laporan
-              </button>
+            <button type="button" className="employee-new-report-card" onClick={handleShowCreateReport}>
+              <span className="new-report-icon">▧</span>
+              <strong>Buat Laporan Baru</strong>
+              <small>Laporkan kerusakan fasilitas</small>
+            </button>
+          </section>
+
+          <section className="employee-dashboard-workspace">
+            <div className="portal-card dashboard-quick-report">
+              <div className="portal-card-heading">
+                <div>
+                  <span className="portal-card-eyebrow">Pelaporan Cepat</span>
+                  <h3>Buat Laporan</h3>
+                </div>
+              </div>
+
+              {reportMessage && <div className="message success-message">{reportMessage}</div>}
+              {reportError && <div className="message error-message">{reportError}</div>}
+
+              <form className="report-form compact-report-form" onSubmit={handleCreateReport}>
+                <div className="form-group">
+                  <label htmlFor="dashboard-facility">Fasilitas</label>
+                  <select
+                    id="dashboard-facility"
+                    value={reportFacilityId}
+                    onChange={(event) => setReportFacilityId(event.target.value)}
+                    required
+                  >
+                    <option value="">-- Pilih fasilitas --</option>
+                    {facilities.map((facility) => (
+                      <option key={facility.id} value={facility.id}>
+                        {facility.name} - {facility.location}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="form-group">
+                  <label htmlFor="dashboard-description">Deskripsi Kerusakan</label>
+                  <textarea
+                    id="dashboard-description"
+                    rows="4"
+                    placeholder="Jelaskan kondisi atau kerusakan fasilitas..."
+                    value={reportDescription}
+                    onChange={(event) => setReportDescription(event.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="quick-report-two-column">
+                  <div className="form-group">
+                    <label htmlFor="dashboard-priority">Prioritas</label>
+                    <select
+                      id="dashboard-priority"
+                      value={reportPriority}
+                      onChange={(event) => setReportPriority(event.target.value)}
+                    >
+                      <option value="low">Rendah</option>
+                      <option value="medium">Sedang</option>
+                      <option value="high">Tinggi</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group dashboard-photo-field">
+                    <label htmlFor="dashboard-photo">Foto</label>
+                    <label className="photo-upload-box" htmlFor="dashboard-photo">
+                      <span>⇧</span>
+                      <strong>{reportPhoto ? reportPhoto.name : 'Upload Foto'}</strong>
+                    </label>
+                    <input
+                      ref={photoInputRef}
+                      type="file"
+                      id="dashboard-photo"
+                      accept="image/*"
+                      onChange={(event) => setReportPhoto(event.target.files[0] || null)}
+                    />
+                  </div>
+                </div>
+
+                <button className="submit-report-button" disabled={reportLoading}>
+                  {reportLoading ? 'Mengirim...' : 'Kirim Laporan'}
+                </button>
+              </form>
             </div>
 
-            <div className="dashboard-card">
-              <h3>Laporan Saya</h3>
-              <p>Lihat laporan dan perkembangan statusnya.</p>
+            <div className="employee-side-stack">
+              <div className="portal-card dashboard-facility-list">
+                <div className="portal-card-heading">
+                  <div>
+                    <span className="portal-card-eyebrow">Fasilitas</span>
+                    <h3>Daftar Fasilitas</h3>
+                  </div>
+                  <button type="button" className="text-action-button" onClick={handleShowFacilities}>Lihat Semua</button>
+                </div>
 
-              <button
-                className="card-button"
-                onClick={handleShowMyReports}
-              >
-                Lihat Laporan
-              </button>
+                <div className="compact-facility-list">
+                  {facilities.slice(0, 5).map((facility) => (
+                    <button type="button" key={facility.id} onClick={handleShowCreateReport}>
+                      <span className="facility-list-icon">▣</span>
+                      <div>
+                        <strong>{facility.name}</strong>
+                        <small>{facility.location}</small>
+                      </div>
+                      <b>›</b>
+                    </button>
+                  ))}
+                  {!facilitiesLoading && facilities.length === 0 && <p className="muted-copy">Belum ada fasilitas aktif.</p>}
+                </div>
+              </div>
+
+              <div className="portal-card dashboard-history-card">
+                <div className="portal-card-heading">
+                  <div>
+                    <span className="portal-card-eyebrow">Aktivitas</span>
+                    <h3>Riwayat Status</h3>
+                  </div>
+                  <button type="button" className="text-action-button" onClick={handleShowMyReports}>Laporan Saya</button>
+                </div>
+
+                {latestReport ? (
+                  <div className="dashboard-history-item">
+                    <i />
+                    <div>
+                      <strong>{getStatusLabel(latestReport.status)}</strong>
+                      <p>{latestReport.facility?.name}</p>
+                      <small>{latestHistory?.created_at ? formatDate(latestHistory.created_at) : formatDate(latestReport.created_at)}</small>
+                    </div>
+                  </div>
+                ) : (
+                  <p className="muted-copy">Belum ada riwayat laporan.</p>
+                )}
+              </div>
             </div>
-
-            <div className="dashboard-card">
-              <h3>Daftar Fasilitas</h3>
-              <p>Lihat fasilitas perusahaan yang aktif.</p>
-
-              <button
-                className="card-button"
-                onClick={handleShowFacilities}
-              >
-                Lihat Fasilitas
-              </button>
-            </div>
-          </div>
+          </section>
         </main>
       </div>
     )
@@ -1647,40 +1824,93 @@ function App() {
   // =========================================
 
   return (
-    <div className="login-page">
-      <div className="login-card">
+    <div className="login-page fasi-login-page">
+      <div className="login-background-art" aria-hidden="true">
+        <span className="art-monitor" />
+        <span className="art-desk" />
+        <span className="art-chair" />
+        <span className="art-lamp" />
+        <span className="art-bulb">!</span>
+      </div>
+
+      <div className="login-corner-brand">
+        <span className="fasi-brand-icon" aria-hidden="true">
+          <span className="fasi-wrench">⚒</span>
+          <span className="fasi-sheet">▤</span>
+        </span>
+        <span className="fasi-brand-text">
+          <strong>FasiReport</strong>
+          <small>Aplikasi Pelaporan Kerusakan Fasilitas</small>
+        </span>
+      </div>
+
+      <section className="login-hero-copy">
+        <div className="hero-brand-large">
+          <span className="fasi-brand-icon large" aria-hidden="true">
+            <span className="fasi-wrench">⚒</span>
+            <span className="fasi-sheet">▤</span>
+          </span>
+          <div>
+            <h1>FasiReport</h1>
+            <p>Aplikasi Pelaporan Kerusakan Fasilitas</p>
+          </div>
+        </div>
+        <p className="login-hero-description">
+          Laporkan kerusakan fasilitas dengan cepat, pantau progres perbaikan,
+          dan bantu lingkungan kerja tetap aman serta nyaman.
+        </p>
+      </section>
+
+      <div className="login-card fasi-login-card">
         <div className="login-header">
-          <h1>Facility Report</h1>
-          <p>Sistem Pelaporan Kondisi Fasilitas Perusahaan</p>
+          <span className="login-card-kicker">PORTAL FASILITAS</span>
+          <h1>Masuk ke FasiReport</h1>
+          <p>Silakan masukkan kredensial Anda untuk melapor kerusakan.</p>
         </div>
 
         <form className="login-form" onSubmit={handleLogin}>
           <div className="form-group">
             <label htmlFor="email">Email</label>
-
-            <input
-              type="email"
-              id="email"
-              value={email}
-              placeholder="Masukkan email"
-              onChange={(event) => setEmail(event.target.value)}
-              required
-            />
+            <div className="login-input-wrap">
+              <span aria-hidden="true">♙</span>
+              <input
+                type="email"
+                id="email"
+                value={email}
+                placeholder="contoh@perusahaan.com"
+                onChange={(event) => setEmail(event.target.value)}
+                required
+              />
+            </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">Kata Sandi</label>
+            <div className="login-input-wrap">
+              <span aria-hidden="true">▣</span>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                placeholder="Masukkan kata sandi"
+                onChange={(event) => setPassword(event.target.value)}
+                required
+              />
+            </div>
+          </div>
 
-            <input
-              type="password"
-              id="password"
-              value={password}
-              placeholder="Masukkan password"
-              onChange={(event) =>
-                setPassword(event.target.value)
-              }
-              required
-            />
+          <div className="login-helper-row">
+            <label className="remember-row">
+              <input type="checkbox" defaultChecked />
+              <span>Ingat Saya</span>
+            </label>
+            <button
+              type="button"
+              className="login-text-link"
+              onClick={() => window.alert('Silakan hubungi Admin IT untuk bantuan kata sandi.')}
+            >
+              Lupa Kata Sandi?
+            </button>
           </div>
 
           {error && (
@@ -1689,20 +1919,19 @@ function App() {
             </div>
           )}
 
-          <button
-            className="login-button"
-            disabled={loading}
-          >
-            {loading ? 'Memproses...' : 'Login'}
+          <button className="login-button fasi-login-button" disabled={loading}>
+            {loading ? 'Memproses...' : 'Masuk'}
           </button>
         </form>
 
-        <p className="login-footer">
-          Masuk menggunakan akun karyawan atau admin
-        </p>
+        <div className="login-support-copy">
+          <p>Belum punya akun? <strong>Hubungi Admin IT</strong></p>
+          <small>Gunakan akun karyawan atau admin yang telah terdaftar.</small>
+        </div>
       </div>
     </div>
   )
+
 }
 
 export default App
