@@ -175,7 +175,7 @@ function App() {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/login',
+        `${API_BASE_URL}/api/login`,
         {
           method: 'POST',
           headers: {
@@ -222,7 +222,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        'http://127.0.0.1:8000/api/facilities',
+        '/api/facilities',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -285,7 +285,7 @@ function App() {
       }
 
       const response = await apiFetch(
-        'http://127.0.0.1:8000/api/reports',
+        '/api/reports',
         {
           method: 'POST',
           headers: {
@@ -331,7 +331,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        'http://127.0.0.1:8000/api/reports',
+        '/api/reports',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -371,7 +371,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        `http://127.0.0.1:8000/api/reports/${reportId}`,
+        `/api/reports/${reportId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -409,7 +409,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        'http://127.0.0.1:8000/api/admin/dashboard',
+        '/api/admin/dashboard',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -461,7 +461,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        'http://127.0.0.1:8000/api/admin/reports',
+        '/api/admin/reports',
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -505,7 +505,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        `http://127.0.0.1:8000/api/admin/reports/${reportId}`,
+        `/api/admin/reports/${reportId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -550,7 +550,7 @@ function App() {
 
     try {
       const response = await apiFetch(
-        `http://127.0.0.1:8000/api/admin/reports/${selectedAdminReport.id}/status`,
+        `/api/admin/reports/${selectedAdminReport.id}/status`,
         {
           method: 'PATCH',
           headers: {
@@ -601,7 +601,7 @@ function App() {
 
     try {
       if (token) {
-        await fetch('http://127.0.0.1:8000/api/logout', {
+        await fetch(`${API_BASE_URL}/api/logout`, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
@@ -759,7 +759,7 @@ function App() {
 
                     <img
                       className="report-photo"
-                      src={`http://127.0.0.1:8000/storage/${selectedAdminReport.photo}`}
+                      src={`${API_BASE_URL}/storage/${selectedAdminReport.photo}`}
                       alt="Foto kerusakan"
                     />
                   </div>
@@ -1217,7 +1217,7 @@ function App() {
                     <strong>Foto Kerusakan</strong>
                     <img
                       className="report-photo"
-                      src={`http://127.0.0.1:8000/storage/${selectedReport.photo}`}
+                      src={`${API_BASE_URL}/storage/${selectedReport.photo}`}
                       alt="Foto kerusakan"
                     />
                   </div>

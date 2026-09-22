@@ -1,5 +1,11 @@
+import { API_BASE_URL } from '../config'
+
 export async function apiFetch(url, options = {}) {
   const token = localStorage.getItem('token')
+
+  const requestUrl = url.startsWith('http')
+    ? url
+    : `${API_BASE_URL}${url.startsWith('/') ? '' : '/'}${url}`
 
   const headers = {
     Accept: 'application/json',
@@ -10,7 +16,7 @@ export async function apiFetch(url, options = {}) {
     headers.Authorization = `Bearer ${token}`
   }
 
-  const response = await fetch(url, {
+  const response = await fetch(requestUrl, {
     ...options,
     headers,
   })

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { API_BASE_URL } from '../config'
 
 function AdminFacilities({ onBack }) {
   const [facilities, setFacilities] = useState([])
@@ -25,7 +26,7 @@ function AdminFacilities({ onBack }) {
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/admin/facilities',
+        `${API_BASE_URL}/api/admin/facilities`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -107,8 +108,8 @@ function AdminFacilities({ onBack }) {
     const isEditing = Boolean(editingFacility)
 
     const url = isEditing
-      ? `http://127.0.0.1:8000/api/facilities/${editingFacility.id}`
-      : 'http://127.0.0.1:8000/api/facilities'
+      ? `${API_BASE_URL}/api/facilities/${editingFacility.id}`
+      : `${API_BASE_URL}/api/facilities`
 
     try {
       const response = await fetch(url, {
@@ -167,7 +168,7 @@ function AdminFacilities({ onBack }) {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/facilities/${facility.id}`,
+        `${API_BASE_URL}/api/facilities/${facility.id}`,
         {
           method: 'DELETE',
           headers: {

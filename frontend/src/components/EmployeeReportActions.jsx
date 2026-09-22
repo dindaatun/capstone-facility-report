@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { API_BASE_URL } from '../config'
 
 function EmployeeReportActions({
   report,
@@ -37,7 +38,7 @@ function EmployeeReportActions({
 
     try {
       const response = await fetch(
-        'http://127.0.0.1:8000/api/facilities',
+        `${API_BASE_URL}/api/facilities`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -111,7 +112,7 @@ function EmployeeReportActions({
       }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/api/reports/${report.id}`,
+        `${API_BASE_URL}/api/reports/${report.id}`,
         {
           method: 'POST',
           headers: {
@@ -163,7 +164,7 @@ function EmployeeReportActions({
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/reports/${report.id}`,
+        `${API_BASE_URL}/api/reports/${report.id}`,
         {
           method: 'DELETE',
           headers: {
