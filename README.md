@@ -44,3 +44,11 @@ processing
 repaired
    ↓
 completed
+
+## Instalasi Project
+
+### 1. Clone Repository
+
+```bash
+git clone <repository-url>
+cd capstone-facility-report
