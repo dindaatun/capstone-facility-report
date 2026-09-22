@@ -4,6 +4,8 @@ import EmployeeReportActions from './components/EmployeeReportActions'
 import AppHeader from './components/AppHeader'
 import { apiFetch } from './utils/apiFetch'
 import './index.css'
+import { API_BASE_URL } from './config'
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(() => {
